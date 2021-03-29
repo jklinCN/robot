@@ -13,3 +13,11 @@ Tips:
 
 2. Preprocessor definition
 
+   ```
+   DO_NOT_USE_SHARED_MEMORY
+   NON_MATLAB_PARSING
+   MAX_EXT_API_CONNECTIONS=255
+   _CRT_SECURE_NO_WARNINGS
+   ```
+
+   
