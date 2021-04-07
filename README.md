@@ -1,5 +1,8 @@
 # robot
-Tool: V-rep and Visual Studio
+Tool: 
+
+- CoppeliaSim Edu 4.1.0
+- Visual Studio 2019
 
 Model: Universal Robots UR3
 
@@ -19,5 +22,7 @@ Tips:
    MAX_EXT_API_CONNECTIONS=255
    _CRT_SECURE_NO_WARNINGS
    ```
-
    
+3. Additional Library
+
+   - [Eigen](eigen.tuxfamily.org): a C++ template library for linear algebra: matrices, vectors, numerical solvers, and related algorithms.
