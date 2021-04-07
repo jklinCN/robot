@@ -1,5 +1,6 @@
 #pragma once
 #include<Eigen/dense>
+#include<vector>
 using namespace Eigen;
 //定义位姿
 typedef struct pose
@@ -12,4 +13,4 @@ typedef struct pose
 Eigen::Matrix4d kinematics(double* theta_input);
 
 //逆运动学，输入一个位姿，返回对应的八组解
-double** Inverse_kinematics(pose t);
+std::vector<std::vector<double>> Inverse_kinematics(pose t);

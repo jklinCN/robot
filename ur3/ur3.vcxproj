@@ -130,7 +130,7 @@
     <ClCompile Include="extApi.c" />
     <ClCompile Include="extApiPlatform.c" />
     <ClCompile Include="IK.cpp" />
-    <ClCompile Include="源.cpp" />
+    <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="base.h" />

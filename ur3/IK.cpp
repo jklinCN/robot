@@ -17,16 +17,16 @@ const double alpha[6] = { 0,90,0,0,90,-90 };//alpha有0，没有6
 //一组解 -76.28 -83.49 -151.01 -36.32 91.85 20.76
 
 //逆解结果初始化
-double** result_init()
+void result_init(vector<vector<double>>& t)
 {
-	double** t;
-	t = (double**)malloc(sizeof(double*) * (8 + 1));
+	vector<double> tmp;
+	for (int i = 0; i <= 6; i++)
+		tmp.push_back(0);
 	for (int i = 0; i <= 8; i++)
-		t[i] = (double*)malloc(sizeof(double) * (6 + 1));
-	return t;
+		t.push_back(tmp);
 }
 
-Eigen::Matrix4d kinematics(double* theta_input)
+Eigen::Matrix4d kinematics(vector<double> theta_input)
 {
 	Eigen::Matrix4d T[6 + 1];//为了和theta对应，0不用
 	for (int i = 1; i <= 6; i++)
@@ -52,10 +52,11 @@ Eigen::Matrix4d kinematics(double* theta_input)
 	cout << "检验得：X=" << T06(0, 3) << "    Y=" << T06(1, 3) << "     Z=" << T06(2, 3);
 	return T06;
 }
-double** Inverse_kinematics(pose t)
+vector<vector<double>> Inverse_kinematics(pose t)
 {
+	vector<vector<double>> theta;
 	//输入与输出均单位为m
-	double** theta = result_init();
+	result_init(theta);
 
 	//1.旋转向量转旋转矩阵
 	Eigen::Vector3d v(t.RX, t.RY, t.RZ);
