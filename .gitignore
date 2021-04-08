@@ -349,4 +349,5 @@ MigrationBackup/
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
 
-ur3/Eigen/
+# ignore Eigen 
+Eigen/
