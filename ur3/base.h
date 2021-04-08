@@ -14,6 +14,3 @@ void RobotMove(pose TargetPose);
 
 //选择逆解中的最优解
 std::vector<double> ChooseTheBest(std::vector<std::vector<double>> allchoose);
-
-//计算误差
-void CheckError(pose TargetPose);

@@ -66,19 +66,25 @@ vector<double> ChooseTheBest(vector<vector<double>> allchoose)
 	return thebest;
 }
 
-void CheckError(pose TargetPose)
-{
-	float position[3];
-	simxGetObjectPosition(client_id, target, -1, position, simx_opmode_blocking);
-	//todo
-}
-
 void RobotMove(pose TargetPose)
 {
+	float OldPosition[3], NewPosition[3];
+	//获得原位置，用于计算误差
+	simxGetObjectPosition(client_id, target, -1, OldPosition, simx_opmode_blocking);
 	vector<vector<double>> IKSolveResult;
 	IKSolveResult = Inverse_kinematics(TargetPose);
 	vector<double> thebest = ChooseTheBest(IKSolveResult);
 	for (int i = 0; i < 6; i++)
 		simxSetJointTargetPosition(client_id, jointHandles[i], thebest[i + 1], simx_opmode_oneshot);
-	//CheckError(TargetPose);
+	//获得新位置，用于计算误差
+	simxGetObjectPosition(client_id, target, -1, NewPosition, simx_opmode_blocking);
+	simxGetObjectPosition(client_id, target, -1, NewPosition, simx_opmode_buffer);
+	extApi_sleepMs(500);
+	simxGetObjectPosition(client_id, target, -1, NewPosition, simx_opmode_blocking);
+	//计算误差,abs(实际移动的距离-理论要移动的距离)/理论要移动的距离
+	double real_move[3] = { abs(NewPosition[0] - OldPosition[0]),abs(NewPosition[1] - OldPosition[1]),abs(NewPosition[2] - OldPosition[2]) };
+	double theoretical_move[3] = { abs(TargetPose.x - OldPosition[0]),abs(TargetPose.y - OldPosition[1]),abs(TargetPose.z - OldPosition[2]) };
+	cout << "X axis error;" << abs(real_move[0] - theoretical_move[0]) / theoretical_move[0] * 100 << " %" << endl;
+	cout << "Y axis error;" << abs(real_move[1] - theoretical_move[1]) / theoretical_move[1] * 100 << " %" << endl;
+	cout << "Z axis error;" << abs(real_move[2] - theoretical_move[2]) / theoretical_move[2] * 100 << " %" << endl;
 }
