@@ -1,7 +1,7 @@
 #pragma once
 #include<Eigen/dense>
 #include<vector>
-using namespace Eigen;
+
 //定义位姿
 typedef struct pose
 {
@@ -10,7 +10,7 @@ typedef struct pose
 }pose;
 
 //正运动学，输入一组角度值，返回一个4*4矩阵
-Eigen::Matrix4d kinematics(double* theta_input);
+Eigen::Matrix4d kinematics(std::vector<double> theta_input);
 
 //逆运动学，输入一个位姿，返回对应的八组解
 std::vector<std::vector<double>> Inverse_kinematics(pose t);
