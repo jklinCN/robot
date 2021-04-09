@@ -1,7 +1,6 @@
 #include"IK.h"
 #include<iostream>
 #include<memory>
-#include<Eigen/Dense>
 using namespace std;
 using namespace Eigen;
 

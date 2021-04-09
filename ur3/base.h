@@ -1,6 +1,9 @@
 #pragma once
-#include<vector>
 #include"IK.h"
+extern "C" {
+#include"extApi.h"
+#include"extApiPlatform.h"
+}
 #define PI 3.1415926535
 
 //与Vrep进行连接通信

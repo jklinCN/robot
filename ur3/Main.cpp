@@ -1,12 +1,5 @@
 #include<iostream>
-#include<math.h>
-#include<string>
 #include<windows.h>
-extern "C" {
-#include"extApi.h"
-#include"extApiPlatform.h"
-}
-#include"IK.h"
 #include"base.h"
 
 //一组测试数据
@@ -20,13 +13,17 @@ int jointHandles[6];
 
 int main()
 {
-	//---------------连接V-rep-------------------
+	//---------------连接V-rep------------------
 	client_id = vrep_connect();
 	//---------------获取对象-------------------
 	GetVrepObject();
 	//---------------远程操作-------------------
-	RobotMove(test);
-
+	for (int i = 0; i < 100; i++)
+	{
+		Sleep(50);
+		RobotMove(test);
+		test.x += 0.01;
+	}
 	system("pause");
 	simxFinish(client_id);
 }

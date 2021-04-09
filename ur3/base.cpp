@@ -1,10 +1,7 @@
 #include "base.h"
 #include<iostream>
 #include<string>
-extern "C" {
-#include"extApi.h"
-#include"extApiPlatform.h"
-}
+#include<math.h>
 using namespace std;
 extern int client_id;
 extern int jointHandles[6];
@@ -40,6 +37,21 @@ void GetVrepObject()
 
 vector<double> ChooseTheBest(vector<vector<double>> allchoose)
 {
+	//检查是否可达到
+	for (int i = 1; i <= 8; i++)
+	{
+		int flag = 0;
+		for (int j = 1; j <= 6; j++)
+			if (isnormal(allchoose[i][j]))
+				flag++;
+		if (flag == 6)
+			break;
+		else if (i == 8)
+		{
+			cout << "Can't reach the position" << endl;
+			exit(-1);
+		}
+	}
 	double min = 999999;
 	int min_index = 1;
 	for (int i = 1; i <= 8; i++)
@@ -68,23 +80,23 @@ vector<double> ChooseTheBest(vector<vector<double>> allchoose)
 
 void RobotMove(pose TargetPose)
 {
-	float OldPosition[3], NewPosition[3];
+	//float OldPosition[3], NewPosition[3];
 	//获得原位置，用于计算误差
-	simxGetObjectPosition(client_id, target, -1, OldPosition, simx_opmode_blocking);
+	//simxGetObjectPosition(client_id, target, -1, OldPosition, simx_opmode_blocking);
 	vector<vector<double>> IKSolveResult;
 	IKSolveResult = Inverse_kinematics(TargetPose);
 	vector<double> thebest = ChooseTheBest(IKSolveResult);
 	for (int i = 0; i < 6; i++)
 		simxSetJointTargetPosition(client_id, jointHandles[i], thebest[i + 1], simx_opmode_oneshot);
 	//获得新位置，用于计算误差
-	simxGetObjectPosition(client_id, target, -1, NewPosition, simx_opmode_blocking);
-	simxGetObjectPosition(client_id, target, -1, NewPosition, simx_opmode_buffer);
-	extApi_sleepMs(500);
-	simxGetObjectPosition(client_id, target, -1, NewPosition, simx_opmode_blocking);
+	//simxGetObjectPosition(client_id, target, -1, NewPosition, simx_opmode_blocking);
+	//simxGetObjectPosition(client_id, target, -1, NewPosition, simx_opmode_buffer);
+	//extApi_sleepMs(500);
+	//simxGetObjectPosition(client_id, target, -1, NewPosition, simx_opmode_blocking);
 	//计算误差,abs(实际移动的距离-理论要移动的距离)/理论要移动的距离
-	double real_move[3] = { abs(NewPosition[0] - OldPosition[0]),abs(NewPosition[1] - OldPosition[1]),abs(NewPosition[2] - OldPosition[2]) };
-	double theoretical_move[3] = { abs(TargetPose.x - OldPosition[0]),abs(TargetPose.y - OldPosition[1]),abs(TargetPose.z - OldPosition[2]) };
-	cout << "X axis error;" << abs(real_move[0] - theoretical_move[0]) / theoretical_move[0] * 100 << " %" << endl;
-	cout << "Y axis error;" << abs(real_move[1] - theoretical_move[1]) / theoretical_move[1] * 100 << " %" << endl;
-	cout << "Z axis error;" << abs(real_move[2] - theoretical_move[2]) / theoretical_move[2] * 100 << " %" << endl;
+	//double real_move[3] = { abs(NewPosition[0] - OldPosition[0]),abs(NewPosition[1] - OldPosition[1]),abs(NewPosition[2] - OldPosition[2]) };
+	//double theoretical_move[3] = { abs(TargetPose.x - OldPosition[0]),abs(TargetPose.y - OldPosition[1]),abs(TargetPose.z - OldPosition[2]) };
+	//cout << "X axis error;" << abs(real_move[0] - theoretical_move[0]) / theoretical_move[0] * 100 << " %" << endl;
+	//cout << "Y axis error;" << abs(real_move[1] - theoretical_move[1]) / theoretical_move[1] * 100 << " %" << endl;
+	//cout << "Z axis error;" << abs(real_move[2] - theoretical_move[2]) / theoretical_move[2] * 100 << " %" << endl;
 }
